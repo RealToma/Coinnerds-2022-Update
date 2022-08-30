@@ -47,7 +47,6 @@ const symbols = ['CAD', 'USD', 'EUR', 'AED', 'INR', 'PKR'];
 fetch(`https://api.apilayer.com/currency_data/live?source=USD&currencies=${symbols}`, requestOptions)
     .then(response => response.json())
     .then(res => {
-        console.log(res.quotes)
         p_cad = 1/res.quotes.USDCAD;
         p_usd = 1
         p_eur = 1/res.quotes.USDEUR;
