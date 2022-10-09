@@ -5,7 +5,6 @@ import { Box } from '@material-ui/core';
 import Content from "./layouts/content/content";
 import { Web3ReactProvider } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
-import Back from './assets/03.jpg'
 import Particles from 'react-tsparticles';
 import BTCICON from "../src/images/btc.png";
 import ETHICON from "../src/images/eth.png";
@@ -132,9 +131,6 @@ const StyledComponent = styled(Box)`
   flex-direction: column;
   width: 100%;
   height: 100vh;
-  /* background-image: url(${Back}); */
-  /* background-size: 100% 100%;
-  background-repeat: no-repeat; */
-  /* background-color: #F9F9F9; */
+
 `
 export default App;

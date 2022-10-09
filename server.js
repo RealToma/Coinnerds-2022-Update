@@ -4,8 +4,9 @@ var cors = require('cors');
 const { Headers } = require('node-fetch');
 var freeForexAPI = require('freeforexapi');
 var myHeaders = new Headers();
-//  myHeaders.append("apikey", "OTG8D85bFqTGY3chqa4Uvo8hLvTvRmX4");
-myHeaders.append("apikey", "b6LGL9i7bzi1Zyvrt3278rL53rBJjQzG");
+var configData = require('./src/config');
+
+myHeaders.append("apikey", configData.apikey_apilayer);
 
 var requestOptions = {
     method: 'GET',
@@ -42,26 +43,27 @@ const fs = require('fs')
 const dir = './src/assets/music'
 const files = fs.readdirSync(dir);
 
-const symbols = ['CAD', 'USD', 'EUR', 'AED', 'INR', 'PKR'];
+setInterval(() => {
+    const symbols = ['CAD', 'USD', 'EUR', 'AED', 'INR', 'PKR'];
+    fetch(`https://api.apilayer.com/currency_data/live?source=USD&currencies=${symbols}`, requestOptions)
+        .then(response => response.json())
+        .then(res => {
+            p_cad = 1 / res.quotes.USDCAD;
+            p_usd = 1
+            p_eur = 1 / res.quotes.USDEUR;
+            p_aed = 1 / res.quotes.USDAED;
+            p_inr = 1 / res.quotes.USDINR;
+            p_pkr = 1 / res.quotes.USDPKR;
 
-fetch(`https://api.apilayer.com/currency_data/live?source=USD&currencies=${symbols}`, requestOptions)
-    .then(response => response.json())
-    .then(res => {
-        p_cad = 1/res.quotes.USDCAD;
-        p_usd = 1
-        p_eur = 1/res.quotes.USDEUR;
-        p_aed = 1/res.quotes.USDAED;
-        p_inr = 1/res.quotes.USDINR;
-        p_pkr = 1/res.quotes.USDPKR;
-
-        p_cad1 = res.quotes.USDCAD;
-        p_usd1 = 1
-        p_eur1 = res.quotes.USDEUR;
-        p_aed1 = res.quotes.USDAED;
-        p_inr1 = res.quotes.USDINR;
-        p_pkr1 = res.quotes.USDPKR;
-    })
-    .catch(error => console.log('error', error));
+            p_cad1 = res.quotes.USDCAD;
+            p_usd1 = 1
+            p_eur1 = res.quotes.USDEUR;
+            p_aed1 = res.quotes.USDAED;
+            p_inr1 = res.quotes.USDINR;
+            p_pkr1 = res.quotes.USDPKR;
+        })
+        .catch(error => console.log('error', error));
+}, configData.request_time_apilyaer);
 
 setInterval(async () => {
     // const today = new Date()
@@ -257,6 +259,6 @@ app.get('/api/liverates/:coin', function (req, res) {
 
 });
 
-app.listen(9001, function () {
+app.listen(3001, function () {
     console.log('listening node app');
 });

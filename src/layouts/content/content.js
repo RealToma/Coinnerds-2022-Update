@@ -19,7 +19,7 @@ import { MdToggleOn, MdToggleOff } from "react-icons/md";
 // import MUSIC03 from "../../assets/music/Frozen-Let It Go.mp3"
 
 import axios from "../../Server";
-import multiplyer from "../../config";
+import { multiplyer } from "../../config";
 
 const Content = () => {
     const array_rate = ['USD', 'CAD', 'EUR', 'AED', 'INR', 'PKR'];
@@ -33,9 +33,10 @@ const Content = () => {
     const [music_list, set_music_list] = useState();
     useEffect(() => {
         axios.get("get_files_list").then((res) => {
+
             var index = Math.floor((Math.random() * res.data.files.length));
-            let song = new Audio(require("../../assets/music/" + res.data.files[index]));
-            set_music_list(song)
+            // let song = new Audio(require("../../assets/music/" + res.data.files[index]));
+            set_music_list(res.data.files[index])
         }).catch((error) => {
         })
     }, [])
@@ -77,12 +78,23 @@ const Content = () => {
     const [flag_music, set_flag_music] = useState(false);
 
     const play_music = () => {
+        // console.log(music_list);
+
         let song = new Audio(require("../../assets/music/" + music_list));
         if (flag_music === true) {
             song.play();
+            axios.get("get_files_list").then((res) => {
+                var index = Math.floor((Math.random() * res.data.files.length));
+                set_music_list(res.data.files[index])
+            })
+
         }
         else {
             song.pause();
+            axios.get("get_files_list").then((res) => {
+                var index = Math.floor((Math.random() * res.data.files.length));
+                set_music_list(res.data.files[index])
+            })
         }
     }
 
@@ -339,6 +351,7 @@ const TableBox01 = styled(Box)`
     background-color: rgb(255, 255, 255);
     box-shadow: rgb(35 55 80) 0px 6px 10px;
     margin-bottom: 50px;
+    transition: .5s;
     @media (max-width: 1200px) {
         width: 70%;
     }
@@ -346,7 +359,6 @@ const TableBox01 = styled(Box)`
         width: 85%;
     }
     &:hover{
-        transition: .5s;
         box-shadow: rgb(14 114 53) 0px 10px 30px;
     }
 `
@@ -359,6 +371,7 @@ const TableBox02 = styled(Box)`
     background-color: rgb(255, 255, 255);
     box-shadow: rgb(35 55 80) 0px 6px 10px;
     margin-bottom: 50px;
+    transition: .5s;
     @media (max-width: 1200px) {
         width: 70%;
     }
@@ -366,7 +379,6 @@ const TableBox02 = styled(Box)`
         width: 85%;
     }
     &:hover{
-        transition: .5s;
         box-shadow: rgb(122 7 7) 0px 10px 30px;
     }
 `
@@ -457,9 +469,9 @@ const RowText = styled(Box)`
     font-weight: 600;
     color:rgb(84 84 84);
     font-family: 'Changa One',sans-serif;
+    transition: .3s;
     &:hover{
         cursor: pointer;
-        transition: .3s;
         color:rgb(247 148 31);
     }
     @media (max-width: 1200px) {
@@ -480,9 +492,9 @@ const RowText01 = styled(Box)`
     font-weight: 600;
     color:rgb(84 84 84);
     font-family: 'Changa One',sans-serif;
+    transition: .3s;
     &:hover{
         cursor: pointer;
-        transition: .3s;
         color:rgb(247 148 31);
     }
     @media (max-width: 1200px) {
@@ -559,8 +571,8 @@ const SelectBox01 = styled(Box)`
     }
 `
 const MusicBox = styled(Box)`
+     transition: .3s;
     &:hover{
-        transition: .3s;
         cursor: pointer;
         color:rgb(84 84 84);
     }
